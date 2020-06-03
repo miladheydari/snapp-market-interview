@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.miladheydari.snappmarketandroidtest.ui.splash.SplashFragment"
+        android:label="SplashFragment">
+        <action
+            android:id="@+id/action_splashFragment_to_sourceFragment"
+            app:destination="@id/sourceFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@+id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/sourceFragment"
+        android:name="com.miladheydari.snappmarketandroidtest.ui.source.SourceFragment"
+        android:label="SourceFragment">
+        <action
+            android:id="@+id/action_sourceFragment_to_articleFragment"
+            app:destination="@id/articleFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/articleFragment"
+        android:name="com.miladheydari.snappmarketandroidtest.ui.article.ArticleFragment"
+        android:label="ArticleFragment">
+        <argument
+            android:name="sourceId"
+            app:argType="string" />
+        <argument
+            android:name="sourceName"
+            app:argType="string" />
+
+    </fragment>
+</navigation>
