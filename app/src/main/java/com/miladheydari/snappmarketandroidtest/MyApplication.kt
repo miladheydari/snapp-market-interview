@@ -1,6 +1,7 @@
 package com.miladheydari.snappmarketandroidtest
 
 import android.app.Application
+import androidx.multidex.MultiDexApplication
 import com.miladheydari.snappmarketandroidtest.di.AppInjector
 import com.pixplicity.easyprefs.library.Prefs
 import dagger.android.DispatchingAndroidInjector
@@ -8,7 +9,7 @@ import dagger.android.HasAndroidInjector
 import timber.log.Timber
 import javax.inject.Inject
 
-class MyApplication : Application(), HasAndroidInjector {
+class MyApplication : MultiDexApplication(), HasAndroidInjector {
 
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>

@@ -15,6 +15,8 @@ android {
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         dataBinding.enabled = true
+        multiDexEnabled true
+
     }
     buildTypes {
         release {
@@ -40,6 +42,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:multidex:1.0.3'
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -75,7 +78,7 @@ dependencies {
     implementation 'androidx.paging:paging-runtime:2.1.1'
 
     // Dagger
-    implementation 'com.google.dagger:dagger-android:2.25.4'
+    implementation 'com.google.dagger:dagger-android:2.35.1'
     implementation 'com.google.dagger:dagger-android-support:2.25.4'
     kapt 'com.google.dagger:dagger-compiler:2.25.4'
     kapt 'com.google.dagger:dagger-android-processor:2.25.4'
