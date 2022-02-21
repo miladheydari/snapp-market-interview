@@ -13,8 +13,6 @@
             app:destination="@id/sourceFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
             app:popUpTo="@+id/splashFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -27,9 +25,7 @@
             android:id="@+id/action_sourceFragment_to_articleFragment"
             app:destination="@id/articleFragment"
             app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:exitAnim="@anim/fade_out" />
 
     </fragment>
     <fragment
