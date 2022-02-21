@@ -4,66 +4,48 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingComponent
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
-import dagger.android.AndroidInjection
+import androidx.viewbinding.ViewBinding
+import com.mkdev.zerotohero.core.dialog.dismissLoadingDialog
+import com.mkdev.zerotohero.core.dialog.showLoadingDialog
+import com.mkdev.zerotohero.extension.showSnackBar
+import com.snapp.presentation.viewmodel.BaseViewModel
+import timber.log.Timber
 
-abstract class BaseFragment<VM : BaseViewModel, DB : ViewDataBinding>
-    (private val mViewModelClass: Class<VM>) : Fragment() {
+abstract class BaseFragment<VB : ViewBinding, ViewModel : BaseViewModel> : Fragment() {
 
-    lateinit var viewModel: VM
-    open lateinit var mBinding: DB
-    lateinit var dataBindingComponent: DataBindingComponent
 
-    private fun init(inflater: LayoutInflater, container: ViewGroup) {
-        mBinding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false)
-        mBinding.lifecycleOwner = viewLifecycleOwner
-    }
 
-    open fun init() {}
+    protected lateinit var binding: VB
+    protected abstract val viewModel: ViewModel
 
-    @LayoutRes
-    abstract fun getLayoutRes(): Int
-
-    abstract fun initViewModel()
-
-    private fun getViewM(): VM =
-        ViewModelProviders.of(
-            this,
-            (activity as? BaseActivity<*, *>)?.viewModelProviderFactory
-        ).get(mViewModelClass)
-
-    open fun onInject() {}
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(activity)
-        super.onCreate(savedInstanceState)
-        viewModel = getViewM()
-    }
+    abstract fun getViewBinding(): VB
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        init(inflater, container!!)
-        initViewModel()
-        init()
+    ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-
-        return mBinding.root
+        binding = getViewBinding()
+        return binding.root
     }
 
-    open fun refresh() {}
+    protected open fun handleLoading(isLoading: Boolean) {
+        if (isLoading) showLoadingDialog() else dismissLoadingDialog()
+    }
 
+    protected open fun handleErrorMessage(message: String?) {
+        if (message.isNullOrBlank()) return
+        dismissLoadingDialog()
+        Timber.e(message)
+        showSnackBar(binding.root, message)
+    }
     open fun navigate(action: Int) {
         view?.let { _view ->
             Navigation.findNavController(_view).navigate(action)
         }
     }
 }
+

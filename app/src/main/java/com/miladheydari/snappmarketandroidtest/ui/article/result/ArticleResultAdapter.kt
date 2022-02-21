@@ -6,10 +6,13 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import com.miladheydari.snappmarketandroidtest.core.BaseAdapter
 import com.miladheydari.snappmarketandroidtest.databinding.ItemArticleBinding
-import com.miladheydari.snappmarketandroidtest.domain.model.Article
+import com.snapp.domain.models.Article
+import com.snapp.presentation.viewmodel.ArticleResultViewModel
+import javax.inject.Inject
 
 
-class ArticleResultAdapter(
+class ArticleResultAdapter @Inject constructor(
+    val viewModel: ArticleResultViewModel
 ) : BaseAdapter<Article>(diffCallback) {
 
     override fun createBinding(parent: ViewGroup, viewType: Int): ViewDataBinding {
@@ -18,7 +21,6 @@ class ArticleResultAdapter(
             parent,
             false
         )
-        val viewModel = ArticleResultViewModel()
         mBinding.viewModel = viewModel
 
         return mBinding
@@ -35,5 +37,5 @@ val diffCallback = object : DiffUtil.ItemCallback<Article>() {
         oldItem == newItem
 
     override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean =
-        oldItem.title +oldItem.publishedAt == newItem.title +newItem.publishedAt
+        oldItem.title + oldItem.publishedAt == newItem.title + newItem.publishedAt
 }

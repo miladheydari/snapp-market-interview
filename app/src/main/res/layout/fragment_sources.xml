@@ -11,7 +11,7 @@
 
         <variable
             name="viewState"
-            type="com.miladheydari.snappmarketandroidtest.ui.source.SourceViewState" />
+            type="com.snapp.domain.state.SourceViewState" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

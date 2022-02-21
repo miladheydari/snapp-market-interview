@@ -1,2 +1,7 @@
 include ':app'
 rootProject.name='Snapp Market Android Test'
+include ':remote'
+include ':domain'
+include ':data'
+include ':cache'
+include ':presentation'

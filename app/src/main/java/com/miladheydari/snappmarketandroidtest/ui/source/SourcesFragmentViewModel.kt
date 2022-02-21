@@ -3,27 +3,24 @@ package com.miladheydari.snappmarketandroidtest.ui.source
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.switchMap
-import com.miladheydari.snappmarketandroidtest.core.BaseViewModel
 
-
-import com.miladheydari.snappmarketandroidtest.domain.usecase.SourcesUseCase
 
 import javax.inject.Inject
 
 class SourcesFragmentViewModel @Inject internal constructor(
-    private val sourceUseCase: SourcesUseCase
+    private val sourceUseCase: com.snapp.domain.interactor.SourcesUseCase
 ) : BaseViewModel() {
 
-    private val _sourceParams: MutableLiveData<SourcesUseCase.SourceParams> = MutableLiveData()
+    private val _sourceParams: MutableLiveData<com.snapp.domain.interactor.SourcesUseCase.SourceParams> = MutableLiveData()
 
     fun getSourceViewState() = currentSourceViewState
 
-    private val currentSourceViewState: LiveData<SourceViewState> =
+    private val currentSourceViewState: LiveData<com.snapp.domain.models.SourceViewState> =
         _sourceParams.switchMap { params ->
             sourceUseCase.execute(params)
         }
 
-    fun setSourceParams(params: SourcesUseCase.SourceParams) {
+    fun setSourceParams(params: com.snapp.domain.interactor.SourcesUseCase.SourceParams) {
         if (_sourceParams.value == params)
             return
         _sourceParams.postValue(params)

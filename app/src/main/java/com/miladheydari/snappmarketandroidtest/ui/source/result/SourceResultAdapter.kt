@@ -6,13 +6,13 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import com.miladheydari.snappmarketandroidtest.core.BaseAdapter
 import com.miladheydari.snappmarketandroidtest.databinding.ItemSourceBinding
-import com.miladheydari.snappmarketandroidtest.domain.model.Source
+import com.snapp.remote.models.Source
 
 
 class SourceResultAdapter(
-    private val callBack: (Source) -> Unit
+    private val callBack: (com.snapp.remote.models.Source) -> Unit
 
-) : BaseAdapter<Source>(diffCallback) {
+) : BaseAdapter<com.snapp.remote.models.Source>(diffCallback) {
 
     override fun createBinding(parent: ViewGroup, viewType: Int): ViewDataBinding {
         val mBinding = ItemSourceBinding.inflate(
@@ -37,10 +37,10 @@ class SourceResultAdapter(
     }
 }
 
-val diffCallback = object : DiffUtil.ItemCallback<Source>() {
-    override fun areContentsTheSame(oldItem: Source, newItem: Source): Boolean =
+val diffCallback = object : DiffUtil.ItemCallback<com.snapp.remote.models.Source>() {
+    override fun areContentsTheSame(oldItem: com.snapp.remote.models.Source, newItem: com.snapp.remote.models.Source): Boolean =
         oldItem == newItem
 
-    override fun areItemsTheSame(oldItem: Source, newItem: Source): Boolean =
+    override fun areItemsTheSame(oldItem: com.snapp.remote.models.Source, newItem: com.snapp.remote.models.Source): Boolean =
         oldItem.id == newItem.id
 }

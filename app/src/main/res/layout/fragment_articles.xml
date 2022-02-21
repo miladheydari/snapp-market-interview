@@ -7,11 +7,11 @@
 
         <variable
             name="viewModel"
-            type="com.miladheydari.snappmarketandroidtest.ui.article.ArticlesFragmentViewModel" />
+            type="com.snapp.presentation.viewmodel.ArticlesFragmentViewModel" />
 
         <variable
             name="viewState"
-            type="com.miladheydari.snappmarketandroidtest.ui.article.ArticleViewState" />
+            type="com.snapp.domain.state.ArticleViewState" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

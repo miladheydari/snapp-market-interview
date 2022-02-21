@@ -7,8 +7,8 @@ import com.miladheydari.snappmarketandroidtest.R
 import com.miladheydari.snappmarketandroidtest.core.BaseFragment
 import com.miladheydari.snappmarketandroidtest.databinding.FragmentSourcesBinding
 import com.miladheydari.snappmarketandroidtest.di.Injectable
-import com.miladheydari.snappmarketandroidtest.domain.model.Source
-import com.miladheydari.snappmarketandroidtest.domain.usecase.SourcesUseCase
+import com.snapp.remote.models.Source
+import com.snapp.domain.interactor.SourcesUseCase
 
 import com.miladheydari.snappmarketandroidtest.ui.source.result.SourceResultAdapter
 import com.miladheydari.snappmarketandroidtest.utils.extensions.isNetworkAvailable
@@ -53,7 +53,7 @@ class SourceFragment : BaseFragment<SourcesFragmentViewModel, FragmentSourcesBin
 
     }
 
-    private fun initSourceResultAdapter(list: List<Source>) {
+    private fun initSourceResultAdapter(list: List<com.snapp.remote.models.Source>) {
         (mBinding.recyclerView.adapter as SourceResultAdapter).submitList(list)
         isLoading = false
     }
@@ -67,8 +67,8 @@ class SourceFragment : BaseFragment<SourcesFragmentViewModel, FragmentSourcesBin
         }
     }
 
-    private fun getParams(): SourcesUseCase.SourceParams {
-        return SourcesUseCase.SourceParams(
+    private fun getParams(): com.snapp.domain.interactor.SourcesUseCase.SourceParams {
+        return com.snapp.domain.interactor.SourcesUseCase.SourceParams(
 
             fetchRequired = requireContext().isNetworkAvailable()
         )

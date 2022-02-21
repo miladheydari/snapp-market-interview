@@ -1,26 +1,26 @@
 package com.miladheydari.snappmarketandroidtest.ui.article
 
+
+import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.miladheydari.snappmarketandroidtest.R
 import com.miladheydari.snappmarketandroidtest.core.BaseFragment
 import com.miladheydari.snappmarketandroidtest.core.Constants.NetworkService.PAGE_LIMIT
 import com.miladheydari.snappmarketandroidtest.databinding.FragmentArticlesBinding
-
-import com.miladheydari.snappmarketandroidtest.di.Injectable
-import com.miladheydari.snappmarketandroidtest.domain.model.Article
-import com.miladheydari.snappmarketandroidtest.domain.usecase.ArticleUseCase
-
 import com.miladheydari.snappmarketandroidtest.ui.article.result.ArticleResultAdapter
-
 import com.miladheydari.snappmarketandroidtest.utils.PaginationScrollListener
 import com.miladheydari.snappmarketandroidtest.utils.extensions.isNetworkAvailable
 import com.miladheydari.snappmarketandroidtest.utils.extensions.observeWith
+import com.snapp.domain.models.Article
+import com.snapp.presentation.viewmodel.ArticlesFragmentViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 
-class ArticleFragment : BaseFragment<ArticlesFragmentViewModel, FragmentArticlesBinding>
-    (ArticlesFragmentViewModel::class.java), Injectable {
+@AndroidEntryPoint
+class ArticleFragment : BaseFragment<FragmentArticlesBinding, ArticlesFragmentViewModel>() {
 
 
     private val articleFragmentArgs: ArticleFragmentArgs by navArgs()
@@ -29,17 +29,11 @@ class ArticleFragment : BaseFragment<ArticlesFragmentViewModel, FragmentArticles
     private var isLoading: Boolean = false
     private var offset: Int = 1
 
-    override fun getLayoutRes() = R.layout.fragment_articles
 
-    override fun initViewModel() {
-        mBinding.viewModel = viewModel
-    }
-
-    override fun init() {
-        super.init()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = viewModel
         initAdapter()
-
-
         setViewModelObserver()
 
     }
@@ -49,10 +43,10 @@ class ArticleFragment : BaseFragment<ArticlesFragmentViewModel, FragmentArticles
 
         val layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
-        mBinding.recyclerView.adapter = adapter
-        mBinding.recyclerView.layoutManager = layoutManager
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = layoutManager
 
-        mBinding.recyclerView.addOnScrollListener(object :
+        binding.recyclerView.addOnScrollListener(object :
             PaginationScrollListener(layoutManager) {
             override fun isLastPage(): Boolean {
 
@@ -69,14 +63,14 @@ class ArticleFragment : BaseFragment<ArticlesFragmentViewModel, FragmentArticles
                     return
                 }
                 isLoading = true
-                offset +=1
+                offset += 1
                 viewModel.setArticleParams(getParams())
             }
         })
     }
 
     private fun initArticleResultAdapter(list: List<Article>) {
-        (mBinding.recyclerView.adapter as ArticleResultAdapter).submitList(list)
+        (binding.recyclerView.adapter as ArticleResultAdapter).submitList(list)
         isLoading = false
     }
 
@@ -84,13 +78,13 @@ class ArticleFragment : BaseFragment<ArticlesFragmentViewModel, FragmentArticles
         viewModel.setArticleParams(getParams())
 
         viewModel.getArticleViewState().observeWith(viewLifecycleOwner) {
-            mBinding.viewState = it
+            binding.viewState = it
             it.data?.let { results -> initArticleResultAdapter(results) }
         }
     }
 
-    private fun getParams(): ArticleUseCase.ArticleParams {
-        return ArticleUseCase.ArticleParams(
+    private fun getParams(): com.snapp.domain.interactor.ArticleUseCase.ArticleParams {
+        return com.snapp.domain.interactor.ArticleUseCase.ArticleParams(
             sourceId = articleFragmentArgs.sourceId,
             page = offset,
             pageSize = PAGE_LIMIT,
@@ -100,8 +94,13 @@ class ArticleFragment : BaseFragment<ArticlesFragmentViewModel, FragmentArticles
 
 
     override fun onDestroy() {
-        mBinding.recyclerView.clearOnScrollListeners()
+        binding.recyclerView.clearOnScrollListeners()
         super.onDestroy()
+    }
+
+    override val viewModel: ArticlesFragmentViewModel by viewModels()
+    override fun getViewBinding(): FragmentArticlesBinding {
+        return FragmentArticlesBinding.inflate(layoutInflater)
     }
 
 
