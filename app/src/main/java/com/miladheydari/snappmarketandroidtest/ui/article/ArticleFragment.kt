@@ -14,6 +14,7 @@ import com.miladheydari.snappmarketandroidtest.ui.article.result.ArticleResultAd
 import com.miladheydari.snappmarketandroidtest.utils.PaginationScrollListener
 import com.miladheydari.snappmarketandroidtest.utils.extensions.isNetworkAvailable
 import com.miladheydari.snappmarketandroidtest.utils.extensions.observeWith
+import com.snapp.domain.interactor.ArticleUseCase
 import com.snapp.domain.models.Article
 import com.snapp.presentation.viewmodel.ArticleResultViewModel
 import com.snapp.presentation.viewmodel.ArticlesFragmentViewModel
@@ -40,7 +41,7 @@ class ArticleFragment : BaseFragment<FragmentArticlesBinding, ArticlesFragmentVi
     }
 
     private fun initAdapter() {
-        val adapter = ArticleResultAdapter(adapterViewModel)
+        val adapter = ArticleResultAdapter()
 
         val layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
@@ -84,8 +85,8 @@ class ArticleFragment : BaseFragment<FragmentArticlesBinding, ArticlesFragmentVi
         }
     }
 
-    private fun getParams(): com.snapp.domain.interactor.ArticleUseCase.ArticleParams {
-        return com.snapp.domain.interactor.ArticleUseCase.ArticleParams(
+    private fun getParams(): ArticleUseCase.ArticleParams {
+        return ArticleUseCase.ArticleParams(
             sourceId = articleFragmentArgs.sourceId,
             page = offset,
             pageSize = PAGE_LIMIT,
@@ -100,7 +101,6 @@ class ArticleFragment : BaseFragment<FragmentArticlesBinding, ArticlesFragmentVi
     }
 
     override val viewModel: ArticlesFragmentViewModel by viewModels()
-    val adapterViewModel :ArticleResultViewModel by viewModels()
     override fun getViewBinding(): FragmentArticlesBinding {
         return FragmentArticlesBinding.inflate(layoutInflater)
     }

@@ -3,15 +3,18 @@ package com.snapp.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.switchMap
+import com.snapp.domain.interactor.SourcesUseCase
 import com.snapp.domain.state.SourceViewState
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 import javax.inject.Inject
 
+@HiltViewModel
 class SourcesFragmentViewModel @Inject internal constructor(
-    private val sourceUseCase: com.snapp.domain.interactor.SourcesUseCase
+    private val sourceUseCase: SourcesUseCase
 ) : BaseViewModel() {
 
-    private val _sourceParams: MutableLiveData<com.snapp.domain.interactor.SourcesUseCase.SourceParams> = MutableLiveData()
+    private val _sourceParams: MutableLiveData<SourcesUseCase.SourceParams> = MutableLiveData()
 
     fun getSourceViewState() = currentSourceViewState
 
@@ -20,7 +23,7 @@ class SourcesFragmentViewModel @Inject internal constructor(
             sourceUseCase.execute(params)
         }
 
-    fun setSourceParams(params: com.snapp.domain.interactor.SourcesUseCase.SourceParams) {
+    fun setSourceParams(params: SourcesUseCase.SourceParams) {
         if (_sourceParams.value == params)
             return
         _sourceParams.postValue(params)

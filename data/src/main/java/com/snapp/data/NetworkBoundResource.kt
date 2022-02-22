@@ -7,6 +7,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.map
 import com.snapp.domain.state.BaseViewState
 import com.snapp.domain.state.ViewState
+import com.snapp.domain.utils.Resource
 import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.Single
@@ -15,17 +16,17 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-abstract class NetworkBoundResource<ResultType, RequestType,E : BaseViewState<ResultType>>
+abstract class NetworkBoundResource<ResultType, RequestType>
 @MainThread internal constructor() {
-    private val result = MediatorLiveData<BaseViewState<ResultType>>()
+    private val result = MediatorLiveData<Resource<ResultType>>()
     private var mDisposable: Disposable? = null
     private var dbSource: LiveData<ResultType>
 
-    internal val asLiveData: LiveData<E>
-        get() = result.map { it as E }
+    internal val asLiveData: LiveData<Resource<ResultType>>
+        get() = result
 
     init {
-        result.value = BaseViewState(ViewState.LOADING)
+        result.value = Resource.Loading
         @Suppress("LeakingThis")
         dbSource = loadFromDb()
         result.addSource(dbSource) { data ->
@@ -35,11 +36,7 @@ abstract class NetworkBoundResource<ResultType, RequestType,E : BaseViewState<Re
             } else {
                 result.addSource(dbSource) { newData ->
                     result.setValue(
-
-                        BaseViewState(
-                            ViewState.COMPLETE,
-                            data = newData
-                        )
+                        Resource.Success(newData)
                     )
                 }
             }
@@ -47,7 +44,7 @@ abstract class NetworkBoundResource<ResultType, RequestType,E : BaseViewState<Re
     }
 
     private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
-        result.addSource(dbSource) { newData -> result.setValue(BaseViewState(ViewState.LOADING)) }
+        result.addSource(dbSource) { newData -> result.setValue(Resource.Loading) }
         createCall()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -67,10 +64,10 @@ abstract class NetworkBoundResource<ResultType, RequestType,E : BaseViewState<Re
                     result.removeSource(dbSource)
                     result.addSource(dbSource) { newData ->
                         result.setValue(
-                            BaseViewState(
-                                viewState = ViewState.ERROR,
-                                errorMessage = e.message.toString(),
-                                throwable = e
+                            Resource.Error(
+                                e.message.toString(),
+                                newData,
+                                e
                             )
                         )
                     }
@@ -94,7 +91,7 @@ abstract class NetworkBoundResource<ResultType, RequestType,E : BaseViewState<Re
 
                 override fun onComplete() {
                     result.addSource(loadFromDb()) { newData ->
-                        result.setValue(BaseViewState(ViewState.COMPLETE,newData))
+                        result.setValue(Resource.Success(newData))
                     }
                     mDisposable!!.dispose()
                 }
@@ -102,7 +99,7 @@ abstract class NetworkBoundResource<ResultType, RequestType,E : BaseViewState<Re
                 override fun onError(e: Throwable) {
                     result.removeSource(dbSource)
                     result.addSource(dbSource) { newData ->
-                        result.setValue(BaseViewState(ViewState.ERROR,null,e.message.toString(), e))
+                        result.setValue(Resource.Error(e.message.toString(),newData, e))
                     }
                     mDisposable!!.dispose()
                 }

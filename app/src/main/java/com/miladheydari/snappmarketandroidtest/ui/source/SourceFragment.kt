@@ -12,6 +12,7 @@ import com.miladheydari.snappmarketandroidtest.databinding.FragmentSourcesBindin
 import com.miladheydari.snappmarketandroidtest.ui.source.result.SourceResultAdapter
 import com.miladheydari.snappmarketandroidtest.utils.extensions.isNetworkAvailable
 import com.miladheydari.snappmarketandroidtest.utils.extensions.observeWith
+import com.snapp.domain.interactor.SourcesUseCase
 import com.snapp.domain.models.Source
 import com.snapp.presentation.viewmodel.SourceResultViewModel
 import com.snapp.presentation.viewmodel.SourcesFragmentViewModel
@@ -35,7 +36,7 @@ class SourceFragment : BaseFragment<FragmentSourcesBinding, SourcesFragmentViewM
     }
 
     private fun initAdapter() {
-        val adapter = SourceResultAdapter(viewModelAdapter) { item ->
+        val adapter = SourceResultAdapter() { item ->
             findNavController().navigate(
                 SourceFragmentDirections.actionSourceFragmentToArticleFragment(item.id, item.name)
             )
@@ -62,8 +63,8 @@ class SourceFragment : BaseFragment<FragmentSourcesBinding, SourcesFragmentViewM
         }
     }
 
-    private fun getParams(): com.snapp.domain.interactor.SourcesUseCase.SourceParams {
-        return com.snapp.domain.interactor.SourcesUseCase.SourceParams(
+    private fun getParams(): SourcesUseCase.SourceParams {
+        return SourcesUseCase.SourceParams(
 
             fetchRequired = requireContext().isNetworkAvailable()
         )
@@ -78,7 +79,6 @@ class SourceFragment : BaseFragment<FragmentSourcesBinding, SourcesFragmentViewM
     }
 
     override val viewModel: SourcesFragmentViewModel by viewModels()
-    val viewModelAdapter: SourceResultViewModel by viewModels()
 
 
     override fun getViewBinding(): FragmentSourcesBinding {

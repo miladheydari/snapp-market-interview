@@ -11,10 +11,7 @@ import com.snapp.presentation.viewmodel.SourceResultViewModel
 
 
 class SourceResultAdapter(
-    val viewModel: SourceResultViewModel,
-
     private val callBack: (Source) -> Unit
-
 ) : BaseAdapter<Source>(diffCallback) {
 
     override fun createBinding(parent: ViewGroup, viewType: Int): ViewDataBinding {
@@ -23,6 +20,7 @@ class SourceResultAdapter(
             parent,
             false
         )
+        val viewModel = SourceResultViewModel()
         mBinding.viewModel = viewModel
         mBinding.rootItemView.setOnClickListener {
             mBinding.viewModel?.item?.get()?.let {

@@ -27,7 +27,6 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashFragmentViewMod
     }
 
     private fun showNextActivity() {
-//        findNavController().graph.startDestinationId = R.id.sourceFragment
 
         findNavController().navigate(
             SplashFragmentDirections.actionSplashFragmentToSourceFragment()

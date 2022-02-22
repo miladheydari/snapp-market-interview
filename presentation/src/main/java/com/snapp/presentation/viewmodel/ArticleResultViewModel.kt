@@ -5,7 +5,6 @@ import com.snapp.domain.models.Article
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-@HiltViewModel
-class ArticleResultViewModel @Inject internal constructor() : BaseViewModel() {
+class ArticleResultViewModel  : BaseViewModel() {
     var item = ObservableField<Article>()
 }

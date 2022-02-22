@@ -5,10 +5,5 @@ import com.snapp.domain.models.Article
 
 class ArticleViewState(
     viewState: ViewState,
-    data: List<Article>?, errorMessage: String?, throwable: Throwable?
-) : BaseViewState<List<Article>>(viewState, data, errorMessage, throwable){
-
-    fun isLoading(): Boolean {
-       return viewState!=ViewState.LOADING
-    }
-}
+    data: List<Article>?=null, errorMessage: String?=null, throwable: Throwable?=null
+) : BaseViewState<List<Article>>(viewState, data, errorMessage, throwable)

@@ -6,10 +6,5 @@ import com.snapp.domain.models.Source
 
 class SourceViewState(
     viewState: ViewState,
-    data: List<Source>?, errorMessage: String?, throwable: Throwable?
-) : BaseViewState<List<Source>>(viewState, data, errorMessage, throwable){
-    fun isLoading(): Boolean {
-       return viewState!=ViewState.LOADING
-    }
-
-}
+    data: List<Source>? = null, errorMessage: String? = null, throwable: Throwable?=null
+) : BaseViewState<List<Source>>(viewState, data, errorMessage, throwable)
