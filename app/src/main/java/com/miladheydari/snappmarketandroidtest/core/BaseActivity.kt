@@ -3,19 +3,14 @@ package com.miladheydari.snappmarketandroidtest.core
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import dagger.android.AndroidInjection
-import dagger.android.support.DaggerAppCompatActivity
-import javax.inject.Inject
+import com.snapp.presentation.viewmodel.BaseViewModel
 
-abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding>(private val mViewModelClass: Class<VM>) :
-    DaggerAppCompatActivity() {
+abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding> :
+    AppCompatActivity() {
 
-    @Inject
-    internal lateinit var viewModelProviderFactory: ViewModelProvider.Factory
 
     @LayoutRes
     abstract fun getLayoutRes(): Int
@@ -24,23 +19,13 @@ abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding>(private va
         DataBindingUtil.setContentView(this, getLayoutRes()) as DB
     }
 
-    val viewModel by lazy {
-        ViewModelProviders.of(this, viewModelProviderFactory).get(mViewModelClass)
-    }
+   abstract val viewModel :VM
 
-    /**
-     * If you want to inject Dependency Injection
-     * on your activity, you can override this.
-     */
-    open fun onInject() {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        initViewModel(viewModel)
-        onInject()
         setupBindingLifecycleOwner()
     }
 
@@ -51,7 +36,6 @@ abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding>(private va
      *
      */
 
-    abstract fun initViewModel(viewModel: VM)
 
     private fun setupBindingLifecycleOwner() {
         binding.lifecycleOwner = this

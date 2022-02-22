@@ -1,60 +1,55 @@
 package com.miladheydari.snappmarketandroidtest.ui.source
 
+
+import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.miladheydari.snappmarketandroidtest.R
 import com.miladheydari.snappmarketandroidtest.core.BaseFragment
 import com.miladheydari.snappmarketandroidtest.databinding.FragmentSourcesBinding
-import com.miladheydari.snappmarketandroidtest.di.Injectable
-import com.snapp.remote.models.Source
-import com.snapp.domain.interactor.SourcesUseCase
-
 import com.miladheydari.snappmarketandroidtest.ui.source.result.SourceResultAdapter
 import com.miladheydari.snappmarketandroidtest.utils.extensions.isNetworkAvailable
 import com.miladheydari.snappmarketandroidtest.utils.extensions.observeWith
+import com.snapp.domain.models.Source
+import com.snapp.presentation.viewmodel.SourceResultViewModel
+import com.snapp.presentation.viewmodel.SourcesFragmentViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
-class SourceFragment : BaseFragment<SourcesFragmentViewModel, FragmentSourcesBinding>
-    (SourcesFragmentViewModel::class.java), Injectable {
-
-
+@AndroidEntryPoint
+class SourceFragment : BaseFragment<FragmentSourcesBinding, SourcesFragmentViewModel>() {
 
 
     private var isLoading: Boolean = false
 
 
-    override fun getLayoutRes() = R.layout.fragment_sources
-
-    override fun initViewModel() {
-        mBinding.viewModel = viewModel
-    }
-
-    override fun init() {
-        super.init()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initAdapter()
 
 
         setViewModelObserver()
 
+
     }
 
     private fun initAdapter() {
-        val adapter = SourceResultAdapter{ item ->
+        val adapter = SourceResultAdapter(viewModelAdapter) { item ->
             findNavController().navigate(
-                SourceFragmentDirections.actionSourceFragmentToArticleFragment(item.id,item.name)
+                SourceFragmentDirections.actionSourceFragmentToArticleFragment(item.id, item.name)
             )
         }
         val layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
-        mBinding.recyclerView.adapter = adapter
-        mBinding.recyclerView.layoutManager = layoutManager
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = layoutManager
 
 
     }
 
-    private fun initSourceResultAdapter(list: List<com.snapp.remote.models.Source>) {
-        (mBinding.recyclerView.adapter as SourceResultAdapter).submitList(list)
+    private fun initSourceResultAdapter(list: List<Source>) {
+        (binding.recyclerView.adapter as SourceResultAdapter).submitList(list)
         isLoading = false
     }
 
@@ -62,7 +57,7 @@ class SourceFragment : BaseFragment<SourcesFragmentViewModel, FragmentSourcesBin
         viewModel.setSourceParams(getParams())
 
         viewModel.getSourceViewState().observeWith(viewLifecycleOwner) {
-            mBinding.viewState = it
+            binding.viewState = it
             it.data?.let { results -> initSourceResultAdapter(results) }
         }
     }
@@ -76,10 +71,18 @@ class SourceFragment : BaseFragment<SourcesFragmentViewModel, FragmentSourcesBin
 
 
     override fun onDestroy() {
-        mBinding.recyclerView.clearOnScrollListeners()
+        binding.recyclerView.clearOnScrollListeners()
 
 
         super.onDestroy()
+    }
+
+    override val viewModel: SourcesFragmentViewModel by viewModels()
+    val viewModelAdapter: SourceResultViewModel by viewModels()
+
+
+    override fun getViewBinding(): FragmentSourcesBinding {
+        return FragmentSourcesBinding.inflate(layoutInflater)
     }
 
 

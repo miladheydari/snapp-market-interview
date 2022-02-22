@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.miladheydari.snappmarketandroidtest.ui.main.MainActivityViewModel" />
+            type="com.snapp.presentation.viewmodel.MainActivityViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

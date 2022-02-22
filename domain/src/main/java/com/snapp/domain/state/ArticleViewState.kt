@@ -8,7 +8,7 @@ class ArticleViewState(
     data: List<Article>?, errorMessage: String?, throwable: Throwable?
 ) : BaseViewState<List<Article>>(viewState, data, errorMessage, throwable){
 
-    fun isLoading(){
-        viewState!=ViewState.LOADING
+    fun isLoading(): Boolean {
+       return viewState!=ViewState.LOADING
     }
 }

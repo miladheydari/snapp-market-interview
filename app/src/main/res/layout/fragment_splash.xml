@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.miladheydari.snappmarketandroidtest.ui.splash.SplashFragmentViewModel" />
+            type="com.snapp.presentation.viewmodel.SplashFragmentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

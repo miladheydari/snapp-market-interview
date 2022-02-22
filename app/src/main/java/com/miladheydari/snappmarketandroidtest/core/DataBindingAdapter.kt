@@ -10,7 +10,6 @@ import com.miladheydari.snappmarketandroidtest.R
 import com.miladheydari.snappmarketandroidtest.utils.GlideApp
 import com.miladheydari.snappmarketandroidtest.utils.extensions.*
 import java.text.SimpleDateFormat
-import java.time.temporal.TemporalField
 import java.util.*
 
 @BindingAdapter("app:visibility")

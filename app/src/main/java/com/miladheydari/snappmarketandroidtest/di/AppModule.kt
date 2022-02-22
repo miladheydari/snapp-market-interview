@@ -17,15 +17,4 @@ import javax.inject.Singleton
 object AppModule {
 
 
-    @Singleton
-    @Provides
-    fun provideGlideInstance(
-        @ApplicationContext context: Context
-    ): RequestManager = Glide.with(context)
-        .setDefaultRequestOptions(
-            RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.ic_launcher_background)
-                .diskCacheStrategy(DiskCacheStrategy.DATA)
-        )
 }

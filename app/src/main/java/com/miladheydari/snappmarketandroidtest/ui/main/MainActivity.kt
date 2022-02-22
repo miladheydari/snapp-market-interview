@@ -2,31 +2,24 @@ package com.miladheydari.snappmarketandroidtest.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.google.android.gms.common.api.ResolvableApiException
 import com.miladheydari.snappmarketandroidtest.R
 import com.miladheydari.snappmarketandroidtest.core.BaseActivity
 import com.miladheydari.snappmarketandroidtest.databinding.ActivityMainBinding
 import com.miladheydari.snappmarketandroidtest.utils.ActivityResultCallback
 import com.miladheydari.snappmarketandroidtest.utils.extensions.hide
 import com.miladheydari.snappmarketandroidtest.utils.extensions.show
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
-import javax.inject.Inject
+import com.snapp.presentation.viewmodel.MainActivityViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>
-    (MainActivityViewModel::class.java), HasAndroidInjector {
+@AndroidEntryPoint
+class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding> (){
 
-    @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any>
     private lateinit var activityResultCallback: ActivityResultCallback
 
-    override fun androidInjector() = androidInjector
 
-    override fun initViewModel(viewModel: MainActivityViewModel) {
-        binding.viewModel = viewModel
-    }
 
     override fun getLayoutRes() = R.layout.activity_main
 
@@ -69,4 +62,6 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>
         super.onActivityResult(requestCode, resultCode, data)
         activityResultCallback.onResult(requestCode, resultCode, data)
     }
+
+    override val viewModel: MainActivityViewModel by viewModels()
 }

@@ -6,13 +6,16 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import com.miladheydari.snappmarketandroidtest.core.BaseAdapter
 import com.miladheydari.snappmarketandroidtest.databinding.ItemSourceBinding
-import com.snapp.remote.models.Source
+import com.snapp.domain.models.Source
+import com.snapp.presentation.viewmodel.SourceResultViewModel
 
 
 class SourceResultAdapter(
-    private val callBack: (com.snapp.remote.models.Source) -> Unit
+    val viewModel: SourceResultViewModel,
 
-) : BaseAdapter<com.snapp.remote.models.Source>(diffCallback) {
+    private val callBack: (Source) -> Unit
+
+) : BaseAdapter<Source>(diffCallback) {
 
     override fun createBinding(parent: ViewGroup, viewType: Int): ViewDataBinding {
         val mBinding = ItemSourceBinding.inflate(
@@ -20,7 +23,6 @@ class SourceResultAdapter(
             parent,
             false
         )
-        val viewModel = SourceResultViewModel()
         mBinding.viewModel = viewModel
         mBinding.rootItemView.setOnClickListener {
             mBinding.viewModel?.item?.get()?.let {
@@ -37,10 +39,10 @@ class SourceResultAdapter(
     }
 }
 
-val diffCallback = object : DiffUtil.ItemCallback<com.snapp.remote.models.Source>() {
-    override fun areContentsTheSame(oldItem: com.snapp.remote.models.Source, newItem: com.snapp.remote.models.Source): Boolean =
+val diffCallback = object : DiffUtil.ItemCallback<Source>() {
+    override fun areContentsTheSame(oldItem: Source, newItem: Source): Boolean =
         oldItem == newItem
 
-    override fun areItemsTheSame(oldItem: com.snapp.remote.models.Source, newItem: com.snapp.remote.models.Source): Boolean =
+    override fun areItemsTheSame(oldItem: Source, newItem: Source): Boolean =
         oldItem.id == newItem.id
 }
