@@ -10,12 +10,7 @@ import javax.inject.Inject
 
 class ArticleUseCase @Inject internal constructor(
     private val repository: ArticleRepository
-) : UseCaseLiveData<ArticleViewState, ArticleUseCase.ArticleParams,
-        ArticleRepository>() {
-
-    override fun getRepository(): ArticleRepository {
-        return repository
-    }
+) : UseCaseLiveData<ArticleViewState, ArticleUseCase.ArticleParams>() {
 
     override fun buildUseCaseObservable(params: ArticleParams?): LiveData<ArticleViewState> {
         return repository.loadArticleBySourceId(

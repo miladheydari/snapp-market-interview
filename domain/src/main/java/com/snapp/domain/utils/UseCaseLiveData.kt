@@ -2,9 +2,8 @@ package com.snapp.domain.utils
 
 import androidx.lifecycle.LiveData
 
-abstract class UseCaseLiveData<M, P, R> {
+abstract class UseCaseLiveData<M, P:UseCaseLiveData.Params> {
 
-    abstract fun getRepository(): R
 
     abstract fun buildUseCaseObservable(params: P?): LiveData<M>
 

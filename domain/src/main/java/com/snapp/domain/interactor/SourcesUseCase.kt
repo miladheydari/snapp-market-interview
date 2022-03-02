@@ -8,12 +8,7 @@ import javax.inject.Inject
 
 class SourcesUseCase @Inject internal constructor(
     private val repository: SourceRepository
-) : UseCaseLiveData<SourceViewState, SourcesUseCase.SourceParams,
-        SourceRepository>() {
-
-    override fun getRepository():SourceRepository {
-        return repository
-    }
+) : UseCaseLiveData<SourceViewState, SourcesUseCase.SourceParams>() {
 
     override fun buildUseCaseObservable(params: SourceParams?): LiveData<SourceViewState> {
         return repository.loadSource(

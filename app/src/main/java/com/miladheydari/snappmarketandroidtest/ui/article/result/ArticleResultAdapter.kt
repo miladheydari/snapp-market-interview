@@ -8,11 +8,9 @@ import com.miladheydari.snappmarketandroidtest.core.BaseAdapter
 import com.miladheydari.snappmarketandroidtest.databinding.ItemArticleBinding
 import com.snapp.domain.models.Article
 import com.snapp.presentation.viewmodel.ArticleResultViewModel
-import com.snapp.presentation.viewmodel.SourceResultViewModel
-import javax.inject.Inject
 
 
-class ArticleResultAdapter() : BaseAdapter<Article>(diffCallback) {
+class ArticleResultAdapter : BaseAdapter<Article>(diffCallback) {
 
     override fun createBinding(parent: ViewGroup, viewType: Int): ViewDataBinding {
         val mBinding = ItemArticleBinding.inflate(

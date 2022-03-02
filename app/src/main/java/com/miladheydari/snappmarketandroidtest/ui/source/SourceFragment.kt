@@ -14,7 +14,6 @@ import com.miladheydari.snappmarketandroidtest.utils.extensions.isNetworkAvailab
 import com.miladheydari.snappmarketandroidtest.utils.extensions.observeWith
 import com.snapp.domain.interactor.SourcesUseCase
 import com.snapp.domain.models.Source
-import com.snapp.presentation.viewmodel.SourceResultViewModel
 import com.snapp.presentation.viewmodel.SourcesFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
